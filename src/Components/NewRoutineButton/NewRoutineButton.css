@@ -1,0 +1,27 @@
+.new-routine-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .new-routine-button button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .new-routine-button .plus-sign {
+    font-size: 20px;
+  }
+  
+  .new-routine-button button:hover {
+    background-color: #45a049;
+  }
+  

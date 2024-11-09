@@ -1,0 +1,31 @@
+.routine-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .routine-item h3 {
+    margin: 0;
+  }
+  
+  .routine-item p {
+    margin: 0;
+  }
+  
+  .access-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .access-button:hover {
+    background-color: #45a049;
+  }
+  
