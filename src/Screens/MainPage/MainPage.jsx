@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar';
-import RoutineItem from './RoutineItem';
-import NewRoutineButton from './NewRoutineButton';
+import { useNavigate } from 'react-router-dom';
+import SearchBar from '../../Components/SearchBar/SearchBar';
+import RoutineItem from '../../Components/RoutineItem/RoutineItem';
+import NewRoutineButton from '../../Components/NewRoutineButton/NewRoutineButton';
 import './MainPage.css';
 
-function MainPage({ userName }) {
+function MainPage({ userId, userName }) {
   const [routines, setRoutines] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
-  // Simulación de la obtención de rutinas desde el backend
   useEffect(() => {
-    // Aquí puedes hacer una llamada al backend para obtener las rutinas
-    setRoutines([
-      { id: 1, name: 'Rutina 1', description: 'Descripción de la rutina 1' },
-      { id: 2, name: 'Rutina 2', description: 'Descripción de la rutina 2' },
-      { id: 3, name: 'Rutina 3', description: 'Descripción de la rutina 3' },
-    ]);
-  }, []);
+    // Obtener las rutinas del usuario desde el backend
+    const fetchRoutines = async () => {
+      try {
+        const response = await fetch(`/api/rutinas?userId=${userId}`);
+        const data = await response.json();
+        setRoutines(data);
+      } catch (error) {
+        console.error("Error al obtener las rutinas:", error);
+      }
+    };
+
+    fetchRoutines();
+  }, [userId]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredRoutines = routines.filter((routine) =>
+    routine.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="main-page">
@@ -24,15 +40,15 @@ function MainPage({ userName }) {
         <h1>Bienvenido, {userName}</h1>
       </header>
 
-      <SearchBar />
+      <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
 
       <div className="routine-list">
-        {routines.map((routine) => (
+        {filteredRoutines.map((routine) => (
           <RoutineItem key={routine.id} routine={routine} />
         ))}
       </div>
 
-      <NewRoutineButton />
+      <NewRoutineButton onClick={() => navigate('/crear-rutina')} />
     </div>
   );
 }

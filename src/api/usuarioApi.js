@@ -18,7 +18,7 @@ async function registrarUsuario(usuarioData) {
         throw error;
     }
 }
-
+  
 // Iniciar sesión
 async function iniciarSesion({ email, contraseña }) {
     if (!email || !contraseña) {
