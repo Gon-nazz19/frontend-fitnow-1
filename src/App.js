@@ -8,7 +8,7 @@ import VistaPreliminarRutinaScreen from './Screens/VistaPreliminarRutinaScreen/V
 
 function App() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <Router>
       <Routes>
         <Route path="/" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />

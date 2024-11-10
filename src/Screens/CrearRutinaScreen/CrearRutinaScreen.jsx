@@ -6,7 +6,7 @@ function CrearRutinaScreen() {
   const [routineData, setRoutineData] = useState({
     name: '',
     description: '',
-    exercises: [], // Lista de ejercicios si quieres agregarla
+    exercises: [],
   });
   const navigate = useNavigate();
 
@@ -19,7 +19,12 @@ function CrearRutinaScreen() {
   };
 
   const handleNext = () => {
-    navigate('/vista-preliminar-rutina', { state: { routineData } });
+    if (routineData.name && routineData.description) {
+      // Navegar a vista preliminar y pasar los datos de la rutina
+      navigate('/vista-preliminar-rutina', { state: { routineData } });
+    } else {
+      alert("Por favor, completa el nombre y la descripción de la rutina.");
+    }
   };
 
   return (

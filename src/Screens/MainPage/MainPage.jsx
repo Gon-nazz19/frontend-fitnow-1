@@ -48,7 +48,7 @@ function MainPage({ userId, userName }) {
         ))}
       </div>
 
-      <NewRoutineButton onClick={() => navigate('/CrearRutinaScreen')} />
+      <NewRoutineButton onClick={() => navigate('/crear-rutina')} />
     </div>
   );
 }

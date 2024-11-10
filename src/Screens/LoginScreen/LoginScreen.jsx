@@ -4,6 +4,8 @@ import InputField from '../../Components/InputField/InputField';
 import LoginButton from '../../Components/LoginButton/LoginButton';
 import { iniciarSesion } from '../../api/usuarioApi';
 import './LoginScreen.css';
+import logo from '../../Images/logo.jpg'; // Importa la imagen
+
 
 function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -29,14 +31,9 @@ function LoginScreen() {
 
   return (
     <div className="login-screen">
-      <img src="/Images/fitnow-logo.png" alt="FitNow Logo" className="logo" />
+      <img src={logo} alt="FitNow Logo" className="login-logo" />
       <h2>Bienvenido a FitNow</h2>
-      <p>
-        ¿No tienes una cuenta?{' '}
-        <Link to="/register" className="register-link">
-          Registrar Usuario
-        </Link>
-      </p>
+
       <form onSubmit={handleLogin}>
         <InputField
           label="Email"
@@ -50,7 +47,7 @@ function LoginScreen() {
         <InputField
           label="Contraseña"
           type="password"
-          placeholder="********"
+          placeholder="****"
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -59,6 +56,12 @@ function LoginScreen() {
         {error && <p className="error-message">{error}</p>}
         <LoginButton />
       </form>
+      <p>
+        ¿No tienes una cuenta?{' '}
+        <Link to="/register" className="register-link">
+          Registrar Usuario
+        </Link>
+      </p>
     </div>
   );
 }

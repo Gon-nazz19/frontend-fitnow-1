@@ -12,10 +12,11 @@ async function registrarUsuario(usuarioData) {
             body: JSON.stringify(usuarioData)
         });
         if (!response.ok) throw new Error("Error al registrar usuario.");
-        return await response.json();
+        const data = await response.json();
+        return { success: true, data };
     } catch (error) {
         console.error("Error en registrarUsuario:", error);
-        throw error;
+        return { success: false, error: error.message };
     }
 }
 
@@ -41,7 +42,7 @@ async function iniciarSesion({ email, password }) {
 async function obtenerUsuarioPorId(id) {
     if (!id) throw new Error("ID de usuario es obligatorio.");
     try {
-        const response = await fetch(`http://localhost:3000/api/usuarios/${id}`);
+        const response = await fetch('http://localhost:3000/api/usuarios/${id}');
         if (!response.ok) throw new Error("Usuario no encontrado.");
         return await response.json();
     } catch (error) {
@@ -49,4 +50,3 @@ async function obtenerUsuarioPorId(id) {
         throw error;
     }
 }
-

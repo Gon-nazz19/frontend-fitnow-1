@@ -1,5 +1,5 @@
 .login-screen {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
@@ -40,4 +40,26 @@
 
 .login-button:hover {
   background-color: #45a049;
+}
+.login-logo {
+  width: 200px; /* Ajusta el tamaño de la imagen */
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.register-link {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.register-link:hover {
+  background-color: #0056b3;
 }
