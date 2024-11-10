@@ -1,5 +1,5 @@
 // usuarioApi.js
-
+export { registrarUsuario, iniciarSesion, obtenerUsuarioPorId };
 // Registrar un nuevo usuario
 async function registrarUsuario(usuarioData) {
     if (!usuarioData || !usuarioData.email || !usuarioData.contrasena) {
@@ -18,17 +18,17 @@ async function registrarUsuario(usuarioData) {
         throw error;
     }
 }
-  
+
 // Iniciar sesión
-async function iniciarSesion({ email, contraseña }) {
-    if (!email || !contraseña) {
+async function iniciarSesion({ email, password }) {
+    if (!email || !password) {
         throw new Error("Email y contraseña son obligatorios.");
     }
     try {
         const response = await fetch('http://localhost:3000/api/usuarios/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, contraseña })
+            body: JSON.stringify({ email, password })
         });
         if (!response.ok) throw new Error("Error en inicio de sesión.");
         return await response.json();
@@ -37,7 +37,6 @@ async function iniciarSesion({ email, contraseña }) {
         throw error;
     }
 }
-
 // Obtener usuario por ID
 async function obtenerUsuarioPorId(id) {
     if (!id) throw new Error("ID de usuario es obligatorio.");
@@ -51,4 +50,3 @@ async function obtenerUsuarioPorId(id) {
     }
 }
 
-export { registrarUsuario, iniciarSesion, obtenerUsuarioPorId };

@@ -19,6 +19,7 @@ function InputField({ label, type, placeholder, options, value, onChange, name }
           value={value}
           onChange={onChange}
           name={name}
+          autocomplete={type === 'password' ? 'current-password' : 'on'}
         />
       )}
     </div>
@@ -26,5 +27,3 @@ function InputField({ label, type, placeholder, options, value, onChange, name }
 }
 
 export default InputField;
-
-
