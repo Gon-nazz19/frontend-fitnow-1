@@ -1,5 +1,6 @@
 // RegisterScreen.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputField from '../../Components/InputField/InputField';
 import RegisterButton from '../../Components/RegisterButton/RegisterButton';
 import { registrarUsuario } from '../../api/usuarioApi';
@@ -15,6 +16,8 @@ function RegisterScreen() {
     edad: '',
     contrasena: '',
   });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,11 +28,25 @@ function RegisterScreen() {
   };
 
   const handleRegister = async () => {
+    const camposVacios = Object.values(formData).some((campo) => campo === '');
+    if (camposVacios) {
+      setError("Todos los campos son obligatorios.");
+      return;
+    }
+  
     try {
-      const response = await registrarUsuario (formData);
-      console.log(response); // Log the response to verify if the registration was successful
+      const response = await registrarUsuario(formData);
+      console.log("Respuesta del servidor:", response); // Verifica la respuesta del servidor
+  
+      if (response.success) {
+        alert("Registro exitoso");
+        navigate('/main'); // Redirige a MainPage después de un registro exitoso
+      } else {
+        setError("Error al registrar. Intenta nuevamente.");
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error en el registro:", error);
+      setError("Hubo un error en el registro. Verifica los datos e intenta nuevamente.");
     }
   };
 
@@ -37,6 +54,7 @@ function RegisterScreen() {
     <div className="register-screen">
       <img src="/Images/fitnow-logo.png" alt="FitNow Logo" className="logo" />
       <h2>Regístrate en FitNow</h2>
+      {error && <p className="error-message">{error}</p>} {/* Mostrar mensaje de error si existe */}
       <div className="form">
         <InputField label="Email" type="email" placeholder="nombre@ejemplo.com" name="email" value={formData.email} onChange={handleChange} />
         <InputField label="Ingrese su nombre" type="text" placeholder="nombre..." name="nombre" value={formData.nombre} onChange={handleChange} />
@@ -46,7 +64,7 @@ function RegisterScreen() {
         <InputField label="Edad" type="text" placeholder="Ingresar edad" name="edad" value={formData.edad} onChange={handleChange} />
         <InputField label="Contraseña" type="password" placeholder="********" name="contrasena" value={formData.contrasena} onChange={handleChange} />
       </div>
-      <RegisterButton text="Registrarse" onClick={handleRegister} />
+      <RegisterButton text="Registrarse" onClick={handleRegister} /> {/* Pasamos handleRegister como onClick */}
     </div>
   );
 }

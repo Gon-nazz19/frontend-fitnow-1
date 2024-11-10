@@ -1,39 +1,54 @@
 // LoginScreen.jsx
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import InputField from '../../Components/InputField/InputField';
-import LoginButton from '../../Components/LoginButton/LoginButton';
+import { useNavigate } from 'react-router-dom';
 import { iniciarSesion } from '../../api/usuarioApi';
+import InputField from '../../Components/InputField/InputField';
 import './LoginScreen.css';
 
 function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({ email: '', contrasena: '' });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleLogin = async () => {
+    if (!formData.email || !formData.contrasena) {
+      setError("Todos los campos son obligatorios.");
+      return;
+    }
+
     try {
-      const response = await iniciarSesion({ email, password });
-      console.log(response); // This will log the API response to check if login was successful
-      // Navigate or update UI based on response if successful
+      const response = await iniciarSesion(formData);
+      console.log("Respuesta del servidor:", response); // Verifica la respuesta del servidor
+  
+      if (response.success) {
+        alert("Inicio de sesión exitoso");
+        navigate('/main'); // Redirige a MainPage después de iniciar sesión exitosamente
+      } else {
+        setError("Correo o contraseña incorrectos. Intenta nuevamente.");
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error al iniciar sesión:", error);
+      setError("Hubo un error al iniciar sesión. Verifica los datos e intenta nuevamente.");
     }
   };
 
   return (
     <div className="login-screen">
-      <img src="/Images/fitnow-logo.png" alt="FitNow Logo" className="logo" />
-      <h2>Bienvenido a FitNow</h2>
-      <p>
-        ¿No tienes una cuenta?{' '}
-        <Link to="/register" className="register-link">
-          Registrar Usuario
-        </Link>
-      </p>
-      <InputField label="Email" type="email" placeholder="nombre@ejemplo.com" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-      <InputField label="Contraseña" type="password" placeholder="********" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-      <LoginButton onClick={handleLogin} />
+      <h2>Iniciar Sesión</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="form">
+        <InputField label="Email" type="email" placeholder="nombre@ejemplo.com" name="email" value={formData.email} onChange={handleChange} />
+        <InputField label="Contraseña" type="password" placeholder="********" name="contrasena" value={formData.contrasena} onChange={handleChange} />
+      </div>
+      <button onClick={handleLogin}>Iniciar Sesión</button>
     </div>
   );
 }
