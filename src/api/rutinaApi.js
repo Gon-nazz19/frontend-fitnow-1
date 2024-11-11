@@ -18,7 +18,10 @@ export async function crearRutina(rutinaData) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(rutinaData)
         });
-        if (!response.ok) throw new Error("Error al guardar la rutina.");
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al guardar la rutina.');
+        }
         const data = await response.json();
         return { success: true, data };
     } catch (error) {

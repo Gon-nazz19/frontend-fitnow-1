@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginScreen setUser={setUser} />} />
-        <Route path="/register" element={<RegisterScreen userId={user?.id_usuario}/>} />
+        <Route path="/register" element={<RegisterScreen setUser={setUser} />} />
         <Route path="/main" element={<MainPage user={user} />} />
         <Route path="/crear-rutina" element={<CrearRutinaScreen userId={user?.id_usuario} />} />
         <Route path="/vista-preliminar-rutina" element={<VistaPreliminarRutinaScreen userId={user?.id_usuario} />} />

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../Components/SearchBar/SearchBar';
 import RoutineItem from '../../Components/RoutineItem/RoutineItem';
 import NewRoutineButton from '../../Components/NewRoutineButton/NewRoutineButton';
 import './MainPage.css';
+import logo from '../../Images/logo.jpg';
 
-function MainPage() {
-  const location = useLocation();
+function MainPage({ user }) {
   const navigate = useNavigate();
-  const { user } = location.state || {};
   const [routines, setRoutines] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -35,25 +34,31 @@ function MainPage() {
     setSearchTerm(e.target.value);
   };
 
+  const handleAccess = (idRutina) => {
+    navigate(`/pagina-de-la-rutina/${idRutina}`);
+  };
+
   const filteredRoutines = routines.filter((routine) =>
     routine.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+
   return (
     <div className="main-page">
       <header>
-        <img src="/Images/fitnow-logo.png" alt="FitNow Logo" className="logo" />
+        <img src={logo} alt="FitNow Logo" className="logo" /> {/* Usa la variable logo */}
         <h1>Bienvenido, {user?.nombre}</h1>
       </header>
       <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
       <div className="routine-list">
         {filteredRoutines.map((routine) => (
-          <RoutineItem key={routine.id_rutina} routine={routine} />
+          <RoutineItem key={routine.id_rutina} routine={routine} onAccess={handleAccess} />
         ))}
       </div>
       <NewRoutineButton onClick={() => navigate('/crear-rutina')} />
     </div>
   );
 }
+
 
 export default MainPage;

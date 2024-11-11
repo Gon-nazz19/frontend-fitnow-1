@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { listarEjercicios } from '../../api/ejercicioApi';
 import './CrearRutinaScreen.css';
 
 function CrearRutinaScreen({ userId }) {
-  const [routineData, setRoutineData] = useState({
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [routineData, setRoutineData] = useState(location.state?.routineData || {
     name: '',
     description: '',
     exercises: [],
-    id_usuario: userId, // Asegúrate de que el ID del usuario esté aquí
+    id_usuario: userId,
   });
-  const navigate = useNavigate();
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const data = await listarEjercicios();
+        setExercises(data);
+      } catch (error) {
+        console.error('Error al listar los ejercicios:', error);
+      }
+    };
+    fetchExercises();
+  }, []);
 
   useEffect(() => {
     setRoutineData((prevData) => ({
@@ -26,13 +41,50 @@ function CrearRutinaScreen({ userId }) {
     }));
   };
 
-  const handleNext = () => {
-    if (routineData.name && routineData.description) {
-      // Navegar a vista preliminar y pasar los datos de la rutina
-      navigate('/vista-preliminar-rutina', { state: { routineData } });
-    } else {
-      alert("Por favor, completa el nombre y la descripción de la rutina.");
+  const handleExerciseChange = (index, field, value) => {
+    if (field === 'series' || field === 'repeticiones') {
+      if (value < 0) {
+        alert('Por favor, ingresa un valor positivo.');
+        return;
+      }
     }
+    const updatedExercises = [...routineData.exercises];
+    updatedExercises[index] = {
+      ...updatedExercises[index],
+      [field]: value,
+    };
+    setRoutineData((prevData) => ({
+      ...prevData,
+      exercises: updatedExercises,
+    }));
+  };
+
+  const addExercise = () => {
+    setRoutineData((prevData) => ({
+      ...prevData,
+      exercises: [...prevData.exercises, { id_ejercicio: '', series: '', repeticiones: '' }],
+    }));
+  };
+
+  const handleNext = () => {
+    if (!routineData.name || !routineData.description) {
+      alert("Por favor, completa el nombre y la descripción de la rutina.");
+      return;
+    }
+
+    if (routineData.exercises.length === 0) {
+      alert("Por favor, agrega al menos un ejercicio a la rutina.");
+      return;
+    }
+
+    for (const exercise of routineData.exercises) {
+      if (!exercise.id_ejercicio || !exercise.series || !exercise.repeticiones) {
+        alert("Por favor, completa todos los campos de series y repeticiones para cada ejercicio.");
+        return;
+      }
+    }
+
+    navigate('/vista-preliminar-rutina', { state: { routineData } });
   };
 
   return (
@@ -51,7 +103,41 @@ function CrearRutinaScreen({ userId }) {
         value={routineData.description}
         onChange={handleChange}
       />
-      <button onClick={handleNext}>Siguiente</button>
+      <div className="button-group">
+        <button className="add-exercise-button" onClick={addExercise}>Agregar Ejercicio</button>
+        <button className="next-button" onClick={handleNext}>Siguiente</button>
+      </div>
+      <div className="exercise-list">
+        {routineData.exercises.map((exercise, index) => (
+          <div key={index} className="exercise-item">
+            <select
+              value={exercise.id_ejercicio}
+              onChange={(e) => handleExerciseChange(index, 'id_ejercicio', e.target.value)}
+            >
+              <option value="">Seleccionar Ejercicio</option>
+              {exercises.map((ex) => (
+                <option key={ex.id_ejercicio} value={ex.id_ejercicio}>
+                  {ex.nombre}
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
+              placeholder="Series"
+              value={exercise.series}
+              onChange={(e) => handleExerciseChange(index, 'series', e.target.value)}
+              min="0"
+            />
+            <input
+              type="number"
+              placeholder="Repeticiones"
+              value={exercise.repeticiones}
+              onChange={(e) => handleExerciseChange(index, 'repeticiones', e.target.value)}
+              min="0"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

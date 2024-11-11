@@ -17,7 +17,6 @@ export async function registrarUsuario(usuarioData) {
         return { success: false, error: error.message };
     }
 }
-
 // Iniciar sesión
 export async function iniciarSesion({ email, password }) {
     if (!email || !password) {
