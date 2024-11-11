@@ -4,9 +4,9 @@ import InputField from '../../Components/InputField/InputField';
 import RegisterButton from '../../Components/RegisterButton/RegisterButton';
 import { registrarUsuario } from '../../api/usuarioApi';
 import './RegisterScreen.css';
-import logo from '../../Images/logo.jpg'
+import logo from '../../Images/logo.jpg';
 
-function RegisterScreen() {
+function RegisterScreen({ setUser }) {
   const [formData, setFormData] = useState({
     email: '',
     nombre: '',
@@ -37,8 +37,9 @@ function RegisterScreen() {
     try {
       const response = await registrarUsuario(formData);
       if (response.success) {
+        setUser(response.data); // Establece el usuario en el estado global o contexto
         alert("Registro exitoso");
-        navigate('/main');
+        navigate('/main', { state: { user: response.data } });
       } else {
         setError("Error al registrar. Intenta nuevamente.");
       }
@@ -50,7 +51,7 @@ function RegisterScreen() {
 
   return (
     <div className="register-screen">
-      <img src={logo} alt="FitNow Logo" className="register-logo" /> {/* Usa una clase específica */}
+      <img src={logo} alt="FitNow Logo" className="register-logo" />
       <h2>Regístrate en FitNow</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleRegister}>
@@ -61,7 +62,7 @@ function RegisterScreen() {
           <InputField label="Altura en cm" type="text" placeholder="Ingresar altura" name="altura" value={formData.altura} onChange={handleChange} />
           <InputField label="Peso en kg" type="text" placeholder="Ingresar peso" name="peso" value={formData.peso} onChange={handleChange} />
           <InputField label="Edad" type="text" placeholder="Ingresar edad" name="edad" value={formData.edad} onChange={handleChange} />
-          <InputField label="Contraseña" type="password" placeholder="****" name="contrasena" value={formData.contrasena} onChange={handleChange} />
+          <InputField label="Contraseña" type="password" placeholder="********" name="contrasena" value={formData.contrasena} onChange={handleChange} />
         </div>
         <RegisterButton text="Registrarse" />
       </form>

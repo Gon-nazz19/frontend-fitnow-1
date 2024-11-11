@@ -1,12 +1,14 @@
 import React from 'react';
 import './RoutineItem.css';
 
-function RoutineItem({ routine }) {
+function RoutineItem({ routine, onAccess }) {
   return (
     <div className="routine-item">
-      <h3>{routine.name}</h3>
-      <p>{routine.description}</p>
-      <button className="access-button">Acceder</button>
+      <div>
+        <h3>{routine.nombre}</h3>
+        <p>{routine.descripcion}</p>
+      </div>
+      <button className="access-button" onClick={() => onAccess(routine.id_rutina)}>Acceder</button>
     </div>
   );
 }

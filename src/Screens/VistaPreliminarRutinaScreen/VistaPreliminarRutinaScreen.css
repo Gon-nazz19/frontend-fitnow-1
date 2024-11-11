@@ -1,0 +1,79 @@
+.vista-preliminar-rutina-screen {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.vista-preliminar-rutina-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.vista-preliminar-rutina-description {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.vista-preliminar-rutina-exercise-list {
+  margin-top: 20px;
+}
+
+.vista-preliminar-rutina-exercise-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.vista-preliminar-rutina-exercise-item h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.vista-preliminar-rutina-exercise-item p {
+  margin: 0;
+  font-size: 1rem;
+  color: #1a1919; /* Color del texto */
+  line-height: 1.5; /* Altura de línea */
+}
+
+.vista-preliminar-rutina-button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.vista-preliminar-rutina-save-button,
+.vista-preliminar-rutina-add-more-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.vista-preliminar-rutina-save-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.vista-preliminar-rutina-save-button:hover {
+  background-color: #45a049;
+}
+
+.vista-preliminar-rutina-add-more-button {
+  background-color: #007BFF;
+  color: white;
+}
+
+.vista-preliminar-rutina-add-more-button:hover {
+  background-color: #0056b3;
+}

@@ -5,13 +5,23 @@
   padding: 20px;
 }
 
-
 header {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+.logo {
+  width: 90px; /* Ajusta el tamaño del logo según sea necesario */
+  height: auto;
+  border-radius: 50%;
+}
+
 h1 {
   font-size: 1.5em;
+}
+
+.routine-list{
+  margin-top: 50px;
+
 }

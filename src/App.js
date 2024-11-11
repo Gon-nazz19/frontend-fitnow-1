@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './Screens/LoginScreen/LoginScreen';
 import RegisterScreen from './Screens/Registrar-usuario/RegisterScreen';
@@ -7,14 +7,16 @@ import CrearRutinaScreen from './Screens/CrearRutinaScreen/CrearRutinaScreen';
 import VistaPreliminarRutinaScreen from './Screens/VistaPreliminarRutinaScreen/VistaPreliminarRutinaScreen';
 
 function App() {
+  const [user, setUser] = useState(null);
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginScreen />} />
-        <Route path="/register" element={<RegisterScreen />} />
-        <Route path="/main" element={<MainPage userId={1} userName="Usuario" />} />
-        <Route path="/crear-rutina" element={<CrearRutinaScreen />} />
-        <Route path="/vista-preliminar-rutina" element={<VistaPreliminarRutinaScreen />} />
+        <Route path="/" element={<LoginScreen setUser={setUser} />} />
+        <Route path="/register" element={<RegisterScreen setUser={setUser} />} />
+        <Route path="/main" element={<MainPage user={user} />} />
+        <Route path="/crear-rutina" element={<CrearRutinaScreen userId={user?.id_usuario} />} />
+        <Route path="/vista-preliminar-rutina" element={<VistaPreliminarRutinaScreen userId={user?.id_usuario} />} />
       </Routes>
     </Router>
   );
