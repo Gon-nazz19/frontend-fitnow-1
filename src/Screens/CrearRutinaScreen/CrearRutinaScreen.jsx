@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CrearRutinaScreen.css';
 
-function CrearRutinaScreen() {
+function CrearRutinaScreen({ userId }) {
   const [routineData, setRoutineData] = useState({
     name: '',
     description: '',
     exercises: [],
+    id_usuario: userId, // Asegúrate de que el ID del usuario esté aquí
   });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setRoutineData((prevData) => ({
+      ...prevData,
+      id_usuario: userId,
+    }));
+  }, [userId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
