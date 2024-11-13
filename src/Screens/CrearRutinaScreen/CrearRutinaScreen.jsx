@@ -13,6 +13,7 @@ function CrearRutinaScreen({ userId }) {
     id_usuario: userId,
   });
   const [exercises, setExercises] = useState([]);
+  const [tempInputs, setTempInputs] = useState({});
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -41,28 +42,48 @@ function CrearRutinaScreen({ userId }) {
     }));
   };
 
-  const handleExerciseChange = (index, field, value) => {
-    if (field === 'series' || field === 'repeticiones') {
-      if (value < 0) {
-        alert('Por favor, ingresa un valor positivo.');
-        return;
+  const handleTempInputChange = (exerciseId, field, value) => {
+    setTempInputs(prev => ({
+      ...prev,
+      [exerciseId]: {
+        ...prev[exerciseId],
+        [field]: value
       }
-    }
-    const updatedExercises = [...routineData.exercises];
-    updatedExercises[index] = {
-      ...updatedExercises[index],
-      [field]: value,
-    };
-    setRoutineData((prevData) => ({
-      ...prevData,
-      exercises: updatedExercises,
     }));
   };
 
-  const addExercise = () => {
-    setRoutineData((prevData) => ({
+  const addExercise = (exercise) => {
+    const exerciseInput = tempInputs[exercise.id_ejercicio];
+    if (!exerciseInput?.series || !exerciseInput?.repeticiones) {
+      alert('Por favor, ingresa series y repeticiones');
+      return;
+    }
+
+    // Verificar si el ejercicio ya existe en la rutina
+    if (routineData.exercises.some(e => e.id_ejercicio === exercise.id_ejercicio)) {
+      alert('Este ejercicio ya ha sido agregado a la rutina');
+      return;
+    }
+
+    setRoutineData(prev => ({
+      ...prev,
+      exercises: [...prev.exercises, {
+        ...exercise,
+        series: exerciseInput.series,
+        repeticiones: exerciseInput.repeticiones
+      }]
+    }));
+
+    setTempInputs(prev => ({
+      ...prev,
+      [exercise.id_ejercicio]: { series: '', repeticiones: '' }
+    }));
+  };
+
+  const removeExercise = (index) => {
+    setRoutineData(prevData => ({
       ...prevData,
-      exercises: [...prevData.exercises, { id_ejercicio: '', series: '', repeticiones: '' }],
+      exercises: prevData.exercises.filter((_, i) => i !== index)
     }));
   };
 
@@ -71,24 +92,16 @@ function CrearRutinaScreen({ userId }) {
       alert("Por favor, completa el nombre y la descripción de la rutina.");
       return;
     }
-
-    if (routineData.exercises.length === 0) {
-      alert("Por favor, agrega al menos un ejercicio a la rutina.");
-      return;
-    }
-
-    for (const exercise of routineData.exercises) {
-      if (!exercise.id_ejercicio || !exercise.series || !exercise.repeticiones) {
-        alert("Por favor, completa todos los campos de series y repeticiones para cada ejercicio.");
-        return;
-      }
-    }
-
     navigate('/vista-preliminar-rutina', { state: { routineData } });
   };
 
   return (
     <div className="crear-rutina-screen">
+      
+      <div className="button-group">
+        <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
+      </div>
+
       <h2>Crear Nueva Rutina</h2>
       <input
         type="text"
@@ -103,40 +116,62 @@ function CrearRutinaScreen({ userId }) {
         value={routineData.description}
         onChange={handleChange}
       />
+      
+      <div className="added-exercises">
+        <h3>Ejercicios Agregados</h3>
+        {routineData.exercises.length === 0 ? (
+          <p>No hay ejercicios agregados</p>
+        ) : (
+          <ul>
+            {routineData.exercises.map((exercise, index) => (
+              <li key={index} className="added-exercise-item">
+                <span className="exercise-info">
+                  {exercise.nombre} - Series: {exercise.series}, Repeticiones: {exercise.repeticiones}
+                </span>
+                <button 
+                  className="delete-button"
+                  onClick={() => removeExercise(index)}
+                >
+                  ✖
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <div className="button-group">
-        <button className="add-exercise-button" onClick={addExercise}>Agregar Ejercicio</button>
         <button className="next-button" onClick={handleNext}>Siguiente</button>
       </div>
-      <div className="exercise-list">
-        {routineData.exercises.map((exercise, index) => (
-          <div key={index} className="exercise-item">
-            <select
-              value={exercise.id_ejercicio}
-              onChange={(e) => handleExerciseChange(index, 'id_ejercicio', e.target.value)}
-            >
-              <option value="">Seleccionar Ejercicio</option>
-              {exercises.map((ex) => (
-                <option key={ex.id_ejercicio} value={ex.id_ejercicio}>
-                  {ex.nombre}
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              placeholder="Series"
-              value={exercise.series}
-              onChange={(e) => handleExerciseChange(index, 'series', e.target.value)}
-              min="0"
-            />
-            <input
-              type="number"
-              placeholder="Repeticiones"
-              value={exercise.repeticiones}
-              onChange={(e) => handleExerciseChange(index, 'repeticiones', e.target.value)}
-              min="0"
-            />
-          </div>
-        ))}
+      
+      <div className="available-exercises">
+        <h3>Ejercicios Disponibles</h3>
+        <div className="exercise-grid">
+          {exercises.map((exercise) => (
+            <div key={exercise.id_ejercicio} className="exercise-card">
+              <img src={exercise.gifUrl} alt={exercise.nombre} />
+              <h4>{exercise.nombre}</h4>
+              <p>{exercise.descripcion}</p>
+              <div className="exercise-inputs">
+                <input
+                  type="number"
+                  placeholder="Series"
+                  value={tempInputs[exercise.id_ejercicio]?.series || ''}
+                  onChange={(e) => handleTempInputChange(exercise.id_ejercicio, 'series', e.target.value)}
+                  min="1"
+                />
+                <input
+                  type="number"
+                  placeholder="Repeticiones"
+                  value={tempInputs[exercise.id_ejercicio]?.repeticiones || ''}
+                  onChange={(e) => handleTempInputChange(exercise.id_ejercicio, 'repeticiones', e.target.value)}
+                  min="1"
+                />
+                <button onClick={() => addExercise(exercise)}>Agregar Ejercicio</button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
