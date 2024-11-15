@@ -35,7 +35,7 @@ function MainPage({ user }) {
   };
 
   const handleAccess = (idRutina) => {
-    navigate(`/pagina-de-la-rutina/${idRutina}`);
+    navigate(`/RutinaPage/${idRutina}`);
   };
 
   const filteredRoutines = routines.filter((routine) =>

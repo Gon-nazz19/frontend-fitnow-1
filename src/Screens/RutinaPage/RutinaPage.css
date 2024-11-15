@@ -1,0 +1,44 @@
+.rutina-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rutina-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.rutina-header h1 {
+  color: #333;
+  font-size: 2rem;
+}
+
+.ejercicios-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+}
+
+.no-ejercicios {
+  text-align: center;
+  color: #666;
+  padding: 40px;
+}
