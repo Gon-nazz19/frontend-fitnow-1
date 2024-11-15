@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import EjercicioCard from '../../Components/EjercicioCard/EjercicioCard';
 import { obtenerEjercicioPorId } from '../../api/ejercicioApi';
 import { obtenerInformesPorIdRutina } from '../../api/informeApi';
@@ -8,6 +8,7 @@ import './RutinaPage.css';
 
 function RutinaPage() {
   const { idRutina } = useParams();
+  const navigate = useNavigate();
   const [ejercicios, setEjercicios] = useState([]);
   const [nombreRutina, setNombreRutina] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +64,10 @@ function RutinaPage() {
       <header className="rutina-header">
         <h1>{nombreRutina || 'Mi Rutina'}</h1>
       </header>
+
+      <div className="button-group">
+        <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
+      </div>
       
       <main className="rutina-content">
         {ejercicios.length === 0 ? (

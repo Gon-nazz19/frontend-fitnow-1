@@ -1,32 +1,45 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { registrarProgreso } from '../../api/progresoApi';
 import './EjercicioCard.css';
 
 function EjercicioCard({ ejercicio }) {
   const [peso, setPeso] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleVerProgreso = () => {
-    // Implementar navegación a la vista de progreso
-    console.log(`Ver progreso del ejercicio ${ejercicio.id_ejercicio}`);
+    navigate('/progreso', { state: { informeId: ejercicio.id_informe } });
   };
 
   const handleIngresarPeso = async () => {
-    if (!peso) {
-      alert('Por favor ingrese un peso válido');
+    if (!peso.trim()) {
+      alert('Por favor ingrese un peso');
       return;
     }
 
+    const pesoNum = Number(peso);
+    if (isNaN(pesoNum) || pesoNum <= 0) {
+      alert('Por favor ingrese un peso válido mayor a 0');
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      await registrarProgreso({
+      const progresoData = {
         id_informe: ejercicio.id_informe,
-        peso: Number(peso),
-        fecha: new Date()
-      });
-      alert('Peso registrado exitosamente');
+        peso: pesoNum,
+        fecha: new Date().toISOString()
+      };
+
+      await registrarProgreso(progresoData);
       setPeso('');
+      alert('Peso registrado exitosamente');
     } catch (error) {
       console.error('Error al registrar el peso:', error);
-      alert('Error al registrar el peso');
+      alert('Error al registrar el peso. Por favor intente nuevamente');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -49,6 +62,7 @@ function EjercicioCard({ ejercicio }) {
         <button 
           className="btn-ver-progreso" 
           onClick={handleVerProgreso}
+          disabled={isLoading}
         >
           Ver progreso
         </button>
@@ -58,12 +72,16 @@ function EjercicioCard({ ejercicio }) {
           value={peso}
           onChange={(e) => setPeso(e.target.value)}
           className="input-peso"
+          min="0"
+          step="0.1"
+          disabled={isLoading}
         />
         <button 
           className="btn-ingresar-peso"
           onClick={handleIngresarPeso}
+          disabled={isLoading}
         >
-          Ingresar peso
+          {isLoading ? 'Registrando...' : 'Ingresar peso'}
         </button>
       </div>
     </div>

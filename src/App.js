@@ -6,7 +6,7 @@ import MainPage from './Screens/MainPage/MainPage';
 import CrearRutinaScreen from './Screens/CrearRutinaScreen/CrearRutinaScreen';
 import VistaPreliminarRutinaScreen from './Screens/VistaPreliminarRutinaScreen/VistaPreliminarRutinaScreen';
 import RutinaPage from './Screens/RutinaPage/RutinaPage.jsx';
-import progresos from './Screens/Progresos/progresos'
+import Progresos from './Screens/Progresos/progresos'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,8 +19,8 @@ function App() {
         <Route path="/main" element={<MainPage user={user} />} />
         <Route path="/RutinaPage/:idRutina" element={<RutinaPage userId={user?.id_usuario} />} />
         <Route path="/vista-preliminar-rutina" element={<VistaPreliminarRutinaScreen userId={user?.id_usuario} />} />
-        <Route path="/RutinaPage/:idRutina" element={<RutinaPage userId={user?.id_usuario} />} />
-        <Route path="/progreso" element={<progresos userId={user?.id_usuario} />} />
+        <Route path="/crear-rutina" element={<CrearRutinaScreen userId={user?.id_usuario} />} />
+        <Route path="/progreso" element={<Progresos />} />
       </Routes>
     </Router>
   );
