@@ -1,12 +1,19 @@
 import React from 'react';
 import './SearchBar.css';
+// Importar el ícono de búsqueda
+import { FaSearch } from 'react-icons/fa';
 
-function SearchBar() {
+function SearchBar({ searchTerm, onSearchChange }) {
   return (
     <div className="search-bar">
-      <input type="text" placeholder="Buscar rutina por nombre..." />
+      <input 
+        type="text" 
+        placeholder="Buscar rutina por nombre..."
+        value={searchTerm}
+        onChange={onSearchChange}
+      />
       <button>
-        <i className="fa fa-search"></i> {/* Requiere font-awesome o un ícono personalizado */}
+        <FaSearch />
       </button>
     </div>
   );

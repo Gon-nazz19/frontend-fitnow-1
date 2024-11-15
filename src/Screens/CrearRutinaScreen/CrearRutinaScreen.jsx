@@ -149,7 +149,14 @@ function CrearRutinaScreen({ userId }) {
         <div className="exercise-grid">
           {exercises.map((exercise) => (
             <div key={exercise.id_ejercicio} className="exercise-card">
-              <img src={exercise.gifUrl} alt={exercise.nombre} />
+              <img 
+                  src={exercise.url_video_imagen} 
+                  alt={exercise.nombre} 
+                  onError={(e) => {
+                    e.target.onerror = null; // Evita bucle infinito
+                    e.target.src = 'https://via.placeholder.com/300x200?text=Ejercicio'; // URL válida de imagen por defecto
+                  }}
+                  style={{ width: '100%', height: '200px', objectFit: 'cover' }}/>
               <h4>{exercise.nombre}</h4>
               <p>{exercise.descripcion}</p>
               <div className="exercise-inputs">
