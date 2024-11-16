@@ -5,6 +5,7 @@ import { obtenerEjercicioPorId } from '../../api/ejercicioApi';
 import { obtenerInformesPorIdRutina } from '../../api/informeApi';
 import { obtenerNombreRutina } from '../../api/rutinaApi';
 import './RutinaPage.css';
+import logo from '../../Images/logo.jpg';
 
 function RutinaPage() {
   const { idRutina } = useParams();
@@ -61,13 +62,16 @@ function RutinaPage() {
 
   return (
     <div className="rutina-page">
+      <img src={logo} alt="FitNow Logo" className="logo" /> {/* Usa la variable logo */}
+      <div className="button-group">
+        <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
+      </div>
+
       <header className="rutina-header">
         <h1>{nombreRutina || 'Mi Rutina'}</h1>
       </header>
 
-      <div className="button-group">
-        <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
-      </div>
+      
       
       <main className="rutina-content">
         {ejercicios.length === 0 ? (

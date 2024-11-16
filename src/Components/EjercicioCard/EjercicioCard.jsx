@@ -8,9 +8,18 @@ function EjercicioCard({ ejercicio }) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleVerProgreso = () => {
-    navigate('/progreso', { state: { informeId: ejercicio.id_informe } });
-  };
+  // In EjercicioCard.jsx when navigating
+const handleVerProgreso = () => {
+  if (!ejercicio.id_informe) {
+      alert('No hay informe asociado a este ejercicio');
+      return;
+  }
+  navigate('/progreso', { 
+      state: { 
+          informeId: ejercicio.id_informe 
+      } 
+  });
+};
 
   const handleIngresarPeso = async () => {
     if (!peso.trim()) {
