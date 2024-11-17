@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { listarEjercicios } from '../../api/ejercicioApi';
 import './CrearRutinaScreen.css';
+import logo from '../../Images/logo.jpg';
 
 function CrearRutinaScreen({ userId }) {
   const location = useLocation();
@@ -97,7 +98,7 @@ function CrearRutinaScreen({ userId }) {
 
   return (
     <div className="crear-rutina-screen">
-      
+      <img src={logo} alt="FitNow Logo" className="login-logo" />
       <div className="button-group">
         <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
       </div>

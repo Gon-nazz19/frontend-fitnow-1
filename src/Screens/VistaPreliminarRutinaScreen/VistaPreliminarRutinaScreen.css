@@ -18,8 +18,12 @@
 }
 
 .vista-preliminar-rutina-exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   margin-top: 20px;
 }
+
 
 .vista-preliminar-rutina-exercise-item {
   display: flex;

@@ -44,7 +44,7 @@
 .login-logo {
   width: 200px; /* Ajusta el tamaño de la imagen */
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .register-link {
