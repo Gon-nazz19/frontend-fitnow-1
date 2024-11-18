@@ -1,12 +1,4 @@
-
-.exercise-card img {
-  height: 200x; /* Reducido de 200px a 150px */
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-/* Agregar altura fija para la descripción y asegurar que el contenido se ajuste */
-.exercise-card {
+.ejercicio-card {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 15px;
@@ -14,28 +6,132 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  height: 450px; /* Altura fija para la tarjeta */
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-.exercise-card h4 {
-  margin: 10px 0;
+.ejercicio-imagen {
+  width: 100%;
+  height: 300px; /* Increased height */
+  object-fit: contain; /* Changed from cover to contain */
+  border-radius: 4px;
+  background-color: #f5f5f5; /* Light background for empty spaces */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ejercicio-detalle {
+  flex: 1;
+  padding: 15px 0;
+}
+
+.ejercicio-detalle h3 {
+  margin: 0 0 10px 0;
   color: #333;
 }
 
-.exercise-card p {
+.ejercicio-detalle p {
   color: #666;
   margin-bottom: 15px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limita el texto a 3 líneas */
   -webkit-box-orient: vertical;
-  flex: 1; /* Permite que la descripción tome el espacio disponible */
+  -webkit-line-clamp: 3; /* Limit text to 3 lines */
 }
 
-/* Asegurar que los inputs y el botón estén al final de la tarjeta */
-.exercise-inputs {
+.ejercicio-stats {
+  margin: 10px 0;
+  color: #666;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row; /* Cambiado a row para mostrar botones horizontalmente */
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 15px;
+  justify-content: space-between; /* Distribuye los botones uniformemente */
+  align-items: center;
+}
+
+.input-peso {
+  flex: 1; /* Hace que el input tome el espacio disponible */
+  max-width: 120px; /* Limita el ancho del input */
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-ver-progreso, 
+.btn-ingresar-peso {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-ver-progreso:hover, 
+.btn-ingresar-peso:hover {
+  background-color: #45a049;
+}
+
+.btn-ver-progreso:disabled, 
+.btn-ingresar-peso:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  border-radius: 4px;
+}
+
+.ejercicio-detalle {
+  flex: 1;
+  padding: 15px 0;
+}
+
+.ejercicio-detalle h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.ejercicio-detalle p {
+  color: #666;
+  margin-bottom: 15px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.ejercicio-stats {
+  margin: 10px 0;
+  color: #666;
+}
+
+.button-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: auto; /* Empuja los inputs hacia abajo */
+  margin-top: auto;
+  padding-top: 15px;
+}
+
+.btn-ver-progreso, 
+.btn-ingresar-peso {
+  flex: 0 0 auto;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-ver-progreso:hover, 
+.btn-ingresar-peso:hover {
+  background-color: #45a049;
 }

@@ -61,11 +61,11 @@ function EjercicioCard({ ejercicio }) {
         <h3>{ejercicio.nombre}</h3>
         <p>{ejercicio.descripcion}</p>
         <div className="ejercicio-stats">
-          <span>Series: {ejercicio.series}</span>
+          <span>Series: {ejercicio.series}</span><br/>
           <span>Repeticiones: {ejercicio.repeticiones}</span>
         </div>
       </div>
-      <div className="acciones">
+      <div className="button-group">
         <button 
           className="btn-ver-progreso"
           onClick={handleVerProgreso}
@@ -87,11 +87,11 @@ function EjercicioCard({ ejercicio }) {
           className="btn-ingresar-peso"
           onClick={handleIngresarPeso}
           disabled={isLoading}
-        >
-          {isLoading ? 'Registrando...' : 'Ingresar peso'}
+        >  
+        {isLoading ? 'Registrando...' : 'Ingresar peso'}
         </button>
       </div>
-    </div>
+      </div>
   );
 }
 
