@@ -18,9 +18,9 @@ export async function registrarProgreso(progresoData) {
 
 // Obtener progreso de un ejercicio para gráficos
 export async function obtenerProgresoParaGrafico(idInforme) {
-    const response = await fetch(`http://localhost:3000/api/progresos/grafico/${idInforme}`);
-    if (!response.ok) {
-        throw new Error('Error al obtener los datos de progreso');
-    }
-    return await response.json();
+  const response = await fetch(`http://localhost:3000/api/progresos/grafico/${idInforme}`);
+  if (!response.ok) {
+    throw new Error('Error al obtener los datos de progreso');
+  }
+  return await response.json();
 }

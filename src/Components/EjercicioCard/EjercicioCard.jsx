@@ -1,3 +1,4 @@
+// frontend/src/Components/EjercicioCard/EjercicioCard.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registrarProgreso } from '../../api/progresoApi';
@@ -8,39 +9,36 @@ function EjercicioCard({ ejercicio }) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // In EjercicioCard.jsx when navigating
-const handleVerProgreso = () => {
-  if (!ejercicio.id_informe) {
+  const handleVerProgreso = () => {
+    if (!ejercicio.id_informe) {
       alert('No hay informe asociado a este ejercicio');
       return;
-  }
-  navigate('/progreso', { 
+    }
+    navigate('/progreso', { 
       state: { 
-          informeId: ejercicio.id_informe 
+        informeId: ejercicio.id_informe 
       } 
-  });
-};
+    });
+  };
 
   const handleIngresarPeso = async () => {
     if (!peso.trim()) {
       alert('Por favor ingrese un peso');
       return;
     }
-
     const pesoNum = Number(peso);
     if (isNaN(pesoNum) || pesoNum <= 0) {
       alert('Por favor ingrese un peso válido mayor a 0');
       return;
     }
-
     setIsLoading(true);
     try {
+      const now = new Date();
       const progresoData = {
         id_informe: ejercicio.id_informe,
         peso: pesoNum,
-        fecha: new Date().toISOString()
+        fecha: now.toISOString()
       };
-
       await registrarProgreso(progresoData);
       setPeso('');
       alert('Peso registrado exitosamente');
@@ -69,7 +67,7 @@ const handleVerProgreso = () => {
       </div>
       <div className="acciones">
         <button 
-          className="btn-ver-progreso" 
+          className="btn-ver-progreso"
           onClick={handleVerProgreso}
           disabled={isLoading}
         >

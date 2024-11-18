@@ -101,6 +101,7 @@ function CrearRutinaScreen({ userId }) {
       <img src={logo} alt="FitNow Logo" className="login-logo" />
       <div className="button-group">
         <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
+        <button className="next-button" onClick={handleNext}>Siguiente</button>
       </div>
 
       <h2>Crear Nueva Rutina</h2>
@@ -140,10 +141,6 @@ function CrearRutinaScreen({ userId }) {
           </ul>
         )}
       </div>
-
-      <div className="button-group">
-        <button className="next-button" onClick={handleNext}>Siguiente</button>
-      </div>
       
       <div className="available-exercises">
         <h3>Ejercicios Disponibles</h3>
@@ -151,13 +148,14 @@ function CrearRutinaScreen({ userId }) {
           {exercises.map((exercise) => (
             <div key={exercise.id_ejercicio} className="exercise-card">
               <img 
-                  src={exercise.url_video_imagen} 
-                  alt={exercise.nombre} 
-                  onError={(e) => {
-                    e.target.onerror = null; // Evita bucle infinito
-                    e.target.src = 'https://via.placeholder.com/300x200?text=Ejercicio'; // URL válida de imagen por defecto
-                  }}
-                  style={{ width: '100%', height: '200px', objectFit: 'cover' }}/>
+                src={exercise.url_video_imagen} 
+                alt={exercise.nombre} 
+                onError={(e) => {
+                  e.target.onerror = null; // Evita bucle infinito
+                  e.target.src = 'https://via.placeholder.com/300x200?text=Ejercicio'; // URL válida de imagen por defecto
+                }}
+                className="ejercicio-imagen"
+              />
               <h4>{exercise.nombre}</h4>
               <p>{exercise.descripcion}</p>
               <div className="exercise-inputs">

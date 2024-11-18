@@ -1,69 +1,65 @@
-import React, { useEffect, useState, useRef } from 'react';
+// frontend/src/Screens/Progresos/progresos.jsx
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { createChart } from 'lightweight-charts';
+import { Line } from 'react-chartjs-2';
+import { format } from 'date-fns-tz';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
 import { obtenerProgresoParaGrafico } from '../../api/progresoApi';
 import './progresos.css';
 
+// Registrar los componentes necesarios de Chart.js
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 function Progresos() {
-  const chartContainerRef = useRef();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [chartData, setChartData] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const informeId = location.state?.informeId;
 
   useEffect(() => {
-    const fetchAndCreateChart = async () => {
+    const fetchProgresoData = async () => {
       try {
-        console.log('Fetching data for informeId:', informeId);
         const data = await obtenerProgresoParaGrafico(informeId);
-        console.log('Received progress data:', data);
-
-        const chartData = data.map(item => ({
-          time: new Date(item.fecha).toISOString().split('T')[0],
-          value: parseFloat(item.peso)
+        
+        // Formatear datos para el gráfico
+        const formattedData = data.map(item => ({
+          x: format(new Date(item.fecha), 'yyyy-MM-dd HH:mm'),
+          y: item.peso
         }));
 
-        const chart = createChart(chartContainerRef.current, {
-          width: chartContainerRef.current.clientWidth,
-          height: 300,
-          layout: {
-            background: { color: '#ffffff' },
-            textColor: '#333',
-          },
-          grid: {
-            vertLines: { color: '#f0f0f0' },
-            horzLines: { color: '#f0f0f0' },
-          },
-          rightPriceScale: {
-            borderVisible: false,
-            title: 'Peso (kg)'
-          },
-          timeScale: {
-            borderVisible: false,
-            timeVisible: true,
-          },
+        setChartData({
+          labels: formattedData.map(item => item.x),
+          datasets: [
+            {
+              label: 'Peso (kg)',
+              data: formattedData,
+              borderColor: '#4CAF50',
+              backgroundColor: 'rgba(76, 175, 80, 0.5)',
+              tension: 0.1
+            }
+          ]
         });
-
-        const lineSeries = chart.addLineSeries({
-          color: '#4CAF50',
-          lineWidth: 2,
-        });
-        lineSeries.setData(chartData);
-
-        const handleResize = () => {
-          chart.applyOptions({
-            width: chartContainerRef.current.clientWidth
-          });
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => {
-          window.removeEventListener('resize', handleResize);
-          chart.remove();
-        };
       } catch (error) {
-        console.error('Error in fetchAndCreateChart:', error);
+        console.error('Error in fetchProgresoData:', error);
         setError('Error al obtener los datos del progreso');
       } finally {
         setLoading(false);
@@ -71,9 +67,38 @@ function Progresos() {
     };
 
     if (informeId) {
-      fetchAndCreateChart();
+      fetchProgresoData();
     }
   }, [informeId]);
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        type: 'category',
+        title: {
+          display: true,
+          text: 'Fecha y Hora'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Peso (kg)'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Progreso del Ejercicio'
+      }
+    }
+  };
 
   if (!informeId) return <div>No se proporcionó ID del informe</div>;
   if (loading) return <div className="loading">Cargando gráfico...</div>;
@@ -82,7 +107,9 @@ function Progresos() {
   return (
     <div className="progreso-container">
       <h2>Progreso del Ejercicio</h2>
-      <div className="chart-container" ref={chartContainerRef} />
+      <div className="chart-container">
+        {chartData && <Line data={chartData} options={options} />}
+      </div>
       <button 
         className="back-button"
         onClick={() => navigate(-1)}

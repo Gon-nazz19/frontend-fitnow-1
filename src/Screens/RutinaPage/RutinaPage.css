@@ -42,3 +42,9 @@
   color: #666;
   padding: 40px;
 }
+.ejercicios-list {
+  display: flex;
+  flex-direction: column; /* Cambiado de grid a flex-direction: column */
+  gap: 20px;
+  padding: 20px;
+}

@@ -22,10 +22,8 @@ function RutinaPage() {
         // Obtener el nombre de la rutina
         const rutinaNombre = await obtenerNombreRutina(idRutina);
         setNombreRutina(rutinaNombre.nombre);
-
         // Obtener los informes de la rutina
         const informes = await obtenerInformesPorIdRutina(idRutina);
-
         // Obtener los detalles de cada ejercicio y combinarlos con la información del informe
         const ejerciciosData = await Promise.all(
           informes.map(async (informe) => {
@@ -38,7 +36,6 @@ function RutinaPage() {
             };
           })
         );
-
         setEjercicios(ejerciciosData);
         setError(null);
       } catch (error) {
@@ -48,7 +45,6 @@ function RutinaPage() {
         setIsLoading(false);
       }
     };
-
     fetchRutinaData();
   }, [idRutina]);
 
@@ -62,17 +58,13 @@ function RutinaPage() {
 
   return (
     <div className="rutina-page">
-      <img src={logo} alt="FitNow Logo" className="logo" /> {/* Usa la variable logo */}
+      <img src={logo} alt="FitNow Logo" className="logo" />
       <div className="button-group">
         <button className="back-button" onClick={() => navigate('/main')}>Volver</button>
       </div>
-
       <header className="rutina-header">
         <h1>{nombreRutina || 'Mi Rutina'}</h1>
       </header>
-
-      
-      
       <main className="rutina-content">
         {ejercicios.length === 0 ? (
           <p className="no-ejercicios">No hay ejercicios en esta rutina.</p>
